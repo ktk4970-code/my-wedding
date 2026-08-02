@@ -1,5 +1,5 @@
 /**
- * Simple & Clean Wedding Invitation
+ * Watercolor Soft Wedding Invitation
  * Korean Mobile 청첩장 - Script
  */
 
@@ -122,7 +122,7 @@
   }
 
   /* ═══════════════════════════════════════════
-     Curtain (Simple Overlay)
+     Curtain (Watercolor Wash)
      ═══════════════════════════════════════════ */
 
   function initCurtain() {
@@ -132,19 +132,135 @@
 
     if (CONFIG.useCurtain === false) {
       curtain.style.display = 'none';
+      initSparkles();
       return;
     }
 
     namesEl.textContent = `${CONFIG.groom.name}  &  ${CONFIG.bride.name}`;
-    document.body.classList.add('no-scroll');
 
     btn.addEventListener('click', () => {
       curtain.classList.add('is-open');
       document.body.classList.remove('no-scroll');
       setTimeout(() => {
         curtain.classList.add('is-hidden');
-      }, 500);
+        initSparkles();
+      }, 1400);
     });
+
+    document.body.classList.add('no-scroll');
+  }
+
+  /* ═══════════════════════════════════════════
+     Falling Pastel Confetti / Sparkles
+     ═══════════════════════════════════════════ */
+
+  function initSparkles() {
+    const canvas = $('#sparkleCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    const particles = [];
+    const PARTICLE_COUNT = 30;
+
+    const colors = [
+      'rgba(232, 223, 240, 0.6)',  // lavender
+      'rgba(245, 224, 224, 0.6)',  // blush
+      'rgba(220, 232, 240, 0.55)', // sky
+      'rgba(224, 240, 232, 0.55)', // mint
+      'rgba(196, 168, 212, 0.4)',  // accent
+      'rgba(255, 255, 255, 0.7)'   // white sparkle
+    ];
+
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+
+    class Particle {
+      constructor() {
+        this.reset(true);
+      }
+
+      reset(initial = false) {
+        this.x = Math.random() * width;
+        this.y = initial ? Math.random() * height * -1 : -20;
+        this.size = 3 + Math.random() * 6;
+        this.speedY = 0.3 + Math.random() * 0.8;
+        this.speedX = -0.2 + Math.random() * 0.4;
+        this.rotation = Math.random() * Math.PI * 2;
+        this.rotSpeed = (Math.random() - 0.5) * 0.03;
+        this.oscillateAmp = 15 + Math.random() * 25;
+        this.oscillateSpeed = 0.008 + Math.random() * 0.015;
+        this.oscillateOffset = Math.random() * Math.PI * 2;
+        this.opacity = 0.3 + Math.random() * 0.5;
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.t = 0;
+        // 0 = circle confetti, 1 = sparkle star, 2 = soft blob
+        this.type = Math.floor(Math.random() * 3);
+      }
+
+      update() {
+        this.t++;
+        this.y += this.speedY;
+        this.x += this.speedX + Math.sin(this.t * this.oscillateSpeed + this.oscillateOffset) * 0.4;
+        this.rotation += this.rotSpeed;
+        if (this.y > height + 20) this.reset();
+      }
+
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation);
+        ctx.globalAlpha = this.opacity;
+
+        if (this.type === 0) {
+          // Circle confetti
+          ctx.fillStyle = this.color;
+          ctx.beginPath();
+          ctx.ellipse(0, 0, this.size, this.size * 0.6, 0, 0, Math.PI * 2);
+          ctx.fill();
+        } else if (this.type === 1) {
+          // Sparkle star (4-point)
+          ctx.fillStyle = this.color;
+          ctx.beginPath();
+          const s = this.size * 0.8;
+          for (let i = 0; i < 4; i++) {
+            const angle = (i * Math.PI) / 2;
+            ctx.lineTo(Math.cos(angle) * s, Math.sin(angle) * s);
+            const midAngle = angle + Math.PI / 4;
+            ctx.lineTo(Math.cos(midAngle) * s * 0.3, Math.sin(midAngle) * s * 0.3);
+          }
+          ctx.closePath();
+          ctx.fill();
+        } else {
+          // Soft blob
+          ctx.fillStyle = this.color;
+          ctx.beginPath();
+          ctx.arc(0, 0, this.size * 0.7, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.restore();
+      }
+    }
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      particles.push(new Particle());
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animate);
+    }
+
+    animate();
   }
 
   /* ═══════════════════════════════════════════
@@ -168,13 +284,14 @@
     function update() {
       const now = new Date();
       const diff = target - now;
+
       const labelEl = $('#countdownLabel');
 
       if (diff <= 0) {
         $('#countDays').textContent = '0';
-        $('#countHours').textContent = '00';
-        $('#countMinutes').textContent = '00';
-        $('#countSeconds').textContent = '00';
+        $('#countHours').textContent = '0';
+        $('#countMinutes').textContent = '0';
+        $('#countSeconds').textContent = '0';
         labelEl.textContent = '결혼식이 시작되었습니다';
         return;
       }
@@ -217,12 +334,12 @@
     const parentsHTML = `
       <div class="parent-row">
         ${parentLine(g.father, g.mother, g.fatherDeceased, g.motherDeceased)}
-        <span class="parent-dot">·</span>
+        <span class="parent-dot">●</span>
         의 아들 <span class="child-name">${g.name}</span>
       </div>
       <div class="parent-row">
         ${parentLine(b.father, b.mother, b.fatherDeceased, b.motherDeceased)}
-        <span class="parent-dot">·</span>
+        <span class="parent-dot">●</span>
         의 딸 <span class="child-name">${b.name}</span>
       </div>
     `;
@@ -246,7 +363,6 @@
       'July', 'August', 'September', 'October', 'November', 'December'];
     grid.innerHTML = `<div class="calendar__header">${monthNames[month]} ${year}</div>`;
 
-    // Weekdays
     const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
     const wdRow = document.createElement('div');
     wdRow.className = 'calendar__weekdays';
@@ -258,7 +374,6 @@
     });
     grid.appendChild(wdRow);
 
-    // Days
     const daysContainer = document.createElement('div');
     daysContainer.className = 'calendar__days';
 
@@ -357,7 +472,7 @@
     galleryImages.forEach((src, i) => {
       const div = document.createElement('div');
       div.className = 'gallery__item animate-item';
-      div.setAttribute('data-animate', 'fade-up');
+      div.setAttribute('data-animate', 'scale-in');
       div.innerHTML = `<img src="${src}" alt="갤러리 사진 ${i + 1}" loading="lazy">`;
       div.addEventListener('click', () => openPhotoModal(galleryImages, i));
       grid.appendChild(div);
@@ -392,6 +507,7 @@
     const img = $('#modalImg');
     img.src = modalImages[modalIndex];
     $('#modalCounter').textContent = `${modalIndex + 1} / ${modalImages.length}`;
+
     $('#modalPrev').style.display = modalIndex > 0 ? '' : 'none';
     $('#modalNext').style.display = modalIndex < modalImages.length - 1 ? '' : 'none';
   }
@@ -459,13 +575,14 @@
 
   function initLocation() {
     const w = CONFIG.wedding;
+    const ml = CONFIG.mapLinks;
     $('#locationVenue').textContent = w.venue;
     $('#locationHall').textContent = w.hall;
     $('#locationAddress').textContent = w.address;
     $('#locationTel').textContent = w.tel ? `Tel. ${w.tel}` : '';
     $('#locationMapImg').src = 'images/location/1.jpg';
-    $('#kakaoMapBtn').href = w.mapLinks.kakao || '#';
-    $('#naverMapBtn').href = w.mapLinks.naver || '#';
+    $('#kakaoMapBtn').href = ml.kakao || '#';
+    $('#naverMapBtn').href = ml.naver || '#';
 
     $('#copyAddressBtn').addEventListener('click', () => {
       copyToClipboard(w.address, '주소가 복사되었습니다');
@@ -577,7 +694,7 @@
 
     $$('.animate-item').forEach((el) => observer.observe(el));
 
-    // Re-observe dynamically added items
+    // Re-observe after dynamic content is added
     const mutObs = new MutationObserver((mutations) => {
       mutations.forEach((m) => {
         m.addedNodes.forEach((node) => {
@@ -618,7 +735,6 @@
     $('#storyTitle').textContent = CONFIG.story.title;
     $('#storyContent').textContent = CONFIG.story.content;
 
-    // Auto-detect images in parallel
     const [storyImages, galleryImages] = await Promise.all([
       loadImagesFromFolder('story'),
       loadImagesFromFolder('gallery')
