@@ -1,5 +1,5 @@
 /**
- * Simple & Clean Wedding Invitation Configuration
+ * Watercolor Soft Wedding Invitation Configuration
  *
  * 이 파일에서 청첩장의 모든 정보를 수정할 수 있습니다.
  * 이미지는 설정이 필요 없습니다. 아래 폴더에 순번 파일명으로 넣으면 자동 감지됩니다.
@@ -13,20 +13,22 @@
  */
 
 const CONFIG = {
-  // ── 초대장 열기 ──
-  useCurtain: false,  // 초대장 열기 화면 사용 여부 (true: 사용, false: 바로 본문 표시)
+  // ── 1. 초대장 열기 ──
+  useCurtain: true,  // 초대장 열기 화면 사용 여부 (true: 사용, false: 바로 본문 표시)
 
-  // ── 메인 (히어로) ──
+  // ── 2. 메인 (히어로) ──
   groom: {
-    name: "김균태",
+    name: "균태",
+    nameEn: "Groom",
     father: "김진호",
     mother: "정은주",
     fatherDeceased: false,
-    motherDeceased: true,
+    motherDeceased: true
   },
 
   bride: {
-    name: "차지연",
+    name: "지연",
+    nameEn: "Bride",
     father: "차정환",
     mother: "이란주",
     fatherDeceased: false,
@@ -38,44 +40,44 @@ const CONFIG = {
     time: "17:00",
     venue: "수원 마이어스",
     hall: "그레이스홀 3층",
-    address: "경기도 수원시 권선구 경수대로 270 터미널동 3층",
-    tel: " 031-267-5500",
-    mapLinks: {
-      naver: "https://naver.me/GgWc38M2"
-    }
+    address: "경기도 수원시 권선구 경수대로 270 터미널동",
+    tel: "031-267-5500"
   },
 
-  // ── 인사말 ──
+  // ── 3. 인사말 ──
   greeting: {
     title: "소중한 분들을 초대합니다",
-    content: "서로 다른 길을 걸어온 두 사람이\n이제 같은 길을 함께 걸어가려 합니다.\n\n저희의 새로운 시작을\n축복해 주시면 감사하겠습니다.\n\n저희의 새로운 시작을\n축복해 주시면 감사하겠습니다.\n\n저희의 새로운 시작을\n축복해 주시면 감사하겠습니다.\n\n저희의 새로운 시작을\n축복해 주시면 감사하겠습니다."
+    content: "서로 다른 길을 걸어온 두 사람이\n이제 같은 길을 함께 걸어가려 합니다.\n\n저희의 새로운 시작을\n축복해 주시면 감사하겠습니다."
   },
 
-  // ── 우리의 이야기 ──
+  // ── 4. 우리의 이야기 ──
   story: {
     title: "우리의 이야기",
     content: "서로 다른 길을 걷던 두 사람이\n하나의 길을 함께 걷게 되었습니다.\n\n여러분을 소중한 자리에 초대합니다."
   },
 
-  // ── 오시는 길 ──
-  // (mapLinks는 wedding 객체 내에 포함)
+  // ── 5. 오시는 길 ──
+  mapLinks: {
+    kakao: "https://place.map.kakao.com/621952280",
+    naver: "https://naver.me/5WOQ8T7a"
+  },
 
-  // ── 마음 전하실 곳 ──
+  // ── 6. 마음 전하실 곳 ──
   accounts: {
     groom: [
-      { role: "신랑", name: "김균태", bank: "국민은행", number: "438902-01-381084" },
+      { role: "신랑", name: "김균태", bank: "토스뱅크", number: "1000-1720-4308" },
       { role: "아버지", name: "김진호", bank: "국민은행", number: "489725-89-122170" },
     ],
     bride: [
-      { role: "신부", name: "차지연", bank: "하나은행", number: "000-000-000000" },
-      { role: "아버지", name: "차정환", bank: "기업은행", number: "000-000-000000" },
-      { role: "어머니", name: "이란주", bank: "농협은행", number: "000-000-000000" }
+      { role: "신부", name: "차지연", bank: "카카오뱅크", number: "3333-19-9690626" },
+      { role: "아버지", name: "차정환", bank: "우리은행", number: "080-325997-02-40-1" },
+      { role: "어머니", name: "이란주", bank: "국민은행", number: "023501-04-132934" }
     ]
   },
 
   // ── 링크 공유 시 나타나는 문구 ──
   meta: {
     title: "신랑 ♥ 신부 결혼합니다",
-    description: "2026년 11월 7일, 소중한 분들을 초대합니다."
+    description: "2026년 5월 9일, 소중한 분들을 초대합니다."
   }
 };
