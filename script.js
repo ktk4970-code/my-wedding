@@ -483,25 +483,71 @@
      Photo Modal (with swipe)
      ═══════════════════════════════════════════ */
 
-  let modalImages = [];
-  let modalIndex = 0;
-  let touchStartX = 0;
-  let touchEndX = 0;
-  let touchStartY = 0;
-  let touchEndY = 0;
+let modalImages = [];
+let modalIndex = 0;
+let touchStartX = 0;
+let touchEndX = 0;
+let touchStartY = 0;
+let touchEndY = 0;
 
-  function openPhotoModal(images, index) {
-    modalImages = images;
-    modalIndex = index;
-    showModalImage();
-    $('#photoModal').classList.add('is-open');
-    document.body.classList.add('no-scroll');
-  }
+/* 사진을 열기 전 스크롤 위치 저장 */
+let modalScrollY = 0;
 
-  function closePhotoModal() {
-    $('#photoModal').classList.remove('is-open');
-    document.body.classList.remove('no-scroll');
-  }
+function lockModalScroll() {
+  // 현재 보고 있던 위치 저장
+  modalScrollY = window.scrollY || window.pageYOffset || 0;
+
+  // body를 고정하되 기존 화면 위치를 그대로 유지
+  document.body.style.top = `-${modalScrollY}px`;
+  document.body.style.left = '0';
+  document.body.style.right = '0';
+
+  document.body.classList.add('no-scroll');
+}
+
+function unlockModalScroll() {
+  // 저장된 위치
+  const restoreY = modalScrollY;
+
+  document.body.classList.remove('no-scroll');
+
+  // body에 임시로 적용했던 값 제거
+  document.body.style.top = '';
+  document.body.style.left = '';
+  document.body.style.right = '';
+
+  // CSS의 scroll-behavior: smooth 영향을 받지 않도록
+  // 즉시 원래 위치로 복귀
+  const html = document.documentElement;
+  const previousScrollBehavior = html.style.scrollBehavior;
+
+  html.style.scrollBehavior = 'auto';
+
+  window.scrollTo(0, restoreY);
+
+  requestAnimationFrame(() => {
+    html.style.scrollBehavior = previousScrollBehavior;
+  });
+}
+
+function openPhotoModal(images, index) {
+  modalImages = images;
+  modalIndex = index;
+
+  // ★ 사진을 열기 전에 현재 위치 기억
+  lockModalScroll();
+
+  showModalImage();
+
+  $('#photoModal').classList.add('is-open');
+}
+
+function closePhotoModal() {
+  $('#photoModal').classList.remove('is-open');
+
+  // ★ 사진을 닫으면 원래 위치로 복귀
+  unlockModalScroll();
+}
 
   function showModalImage() {
     const img = $('#modalImg');
