@@ -797,9 +797,9 @@ function closePhotoModal() {
   }
 })();
 
-/* 전체 글자 크기 15% 확대 */
+/* 전체 글자 크기 20% 확대 */
 window.addEventListener('load', function () {
-  const FONT_SCALE = 1.15;
+  const FONT_SCALE = 1.2;
 
   const elements = [
     document.body,
