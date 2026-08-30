@@ -796,3 +796,25 @@ function closePhotoModal() {
     init();
   }
 })();
+
+/* 전체 글자 크기 15% 확대 */
+window.addEventListener('load', function () {
+  const FONT_SCALE = 1.15;
+
+  const elements = [
+    document.body,
+    ...document.querySelectorAll('body *')
+  ];
+
+  const originalSizes = elements.map(function (el) {
+    return parseFloat(window.getComputedStyle(el).fontSize);
+  });
+
+  elements.forEach(function (el, index) {
+    const size = originalSizes[index];
+
+    if (!isNaN(size) && size > 0) {
+      el.style.fontSize = (size * FONT_SCALE) + 'px';
+    }
+  });
+});
