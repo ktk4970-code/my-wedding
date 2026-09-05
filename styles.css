@@ -1114,6 +1114,8 @@ a {
   letter-spacing: 0.03em;
   color: var(--color-text-light);
   word-break: keep-all;
+
+   white-space: pre-line;
 }
 
 /* ─── Accordion ─── */
