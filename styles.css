@@ -1100,6 +1100,8 @@ a {
   font-weight: 400;
   color: var(--color-text-light);
   margin-bottom: var(--spacing-lg);
+   
+ white-space: pre-line;
 }
 
 
