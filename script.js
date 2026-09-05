@@ -752,6 +752,13 @@ function closePhotoModal() {
     initAccordion('groomAccordion', 'groomAccordionPanel');
     initAccordion('brideAccordion', 'brideAccordionPanel');
 
+  const description = $('#accountDescription');
+  if (description) {
+    const message = CONFIG.accountDescription?.trim() || '';
+    description.textContent = message;
+    description.hidden = message.length === 0;
+    }
+    
     const notice = $('#accountNotice');
     if (notice) {
       const message = CONFIG.accountNotice?.trim() || '';
