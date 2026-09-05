@@ -52,7 +52,7 @@ const CONFIG = {
 
   // ── 4. 우리의 이야기 ──
   story: {
-    title: "균태 ♡ 지연",
+    title: "균태 ♥ 지연",
     content:  ""
 
   },
